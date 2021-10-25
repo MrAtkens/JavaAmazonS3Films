@@ -1,5 +1,7 @@
 package com.book.find.models;
 
+import com.book.find.models.Auth.User;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -13,9 +15,11 @@ public class Film extends MainEntity {
     private String director;
     private String country;
     private String scenarist;
-    private String producer;
     @ManyToOne
     private Category category;
+    private String producer;
+    @ManyToOne
+    private User user;
     private String filmImagePath;
     private String filmPath;
     private Integer boxOfficeInDollar;
@@ -28,7 +32,7 @@ public class Film extends MainEntity {
     }
 
     public Film(String name, Double rating, String description, String director, String country, String scenarist, String producer,
-                Category category, String filmPath, String filmImagePath, Integer boxOfficeInDollar, Date premiere, Integer age) {
+                Category category, User user, String filmPath, String filmImagePath, Integer boxOfficeInDollar, Date premiere, Integer age) {
         this.name = name;
         this.rating = rating;
         this.description = description;
@@ -37,6 +41,7 @@ public class Film extends MainEntity {
         this.scenarist = scenarist;
         this.producer = producer;
         this.category = category;
+        this.user = user;
         this.filmPath = filmPath;
         this.filmImagePath = filmImagePath;
         this.boxOfficeInDollar = boxOfficeInDollar;
@@ -154,6 +159,14 @@ public class Film extends MainEntity {
 
     public void setCountOfView() {
         this.countOfView++;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

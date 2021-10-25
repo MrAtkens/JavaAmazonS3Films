@@ -3,6 +3,7 @@ package com.book.find.controllers;
 import com.book.find.dto.FilmDto;
 import com.book.find.models.Auth.User;
 import com.book.find.models.Category;
+import com.book.find.models.Film;
 import com.book.find.repos.UserRepo;
 import com.book.find.services.CategoryCrudService;
 import com.book.find.services.MovieCrudService;
@@ -31,8 +32,9 @@ public class MovieController {
     }
 
     @GetMapping("/movie-list")
-    public String main(Map<String, Object> model) {
-        model.put("films", movieCrudService.getFilms());
+    public String main(Map<String, Object> model, Principal principal) {
+        User user = userRepo.findByUsername(principal.getName());
+        model.put("films", movieCrudService.getFilmsAdmin(user));
         return "movie-list";
     }
 
@@ -50,9 +52,14 @@ public class MovieController {
     }
 
     @GetMapping("/edit-movie/{id}")
-    public String editMovieGet(@PathVariable UUID id, Map<String, Object> model){
+    public String editMovieGet(@PathVariable UUID id, Map<String, Object> model, Principal principal){
         Iterable<Category> categories = categoryCrudService.getCategories();
-        model.put("film", movieCrudService.getFilmById(id));
+        User user = userRepo.findByUsername(principal.getName());
+        Film film = movieCrudService.getFilmByIdByUser(id, user);
+        if(film == null)
+            return "403";
+        else
+            model.put("film", film);
         model.put("categories", categories);
         return "edit-movie";
     }

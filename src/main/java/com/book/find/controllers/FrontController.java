@@ -3,7 +3,6 @@ package com.book.find.controllers;
 import com.book.find.models.Film;
 import com.book.find.services.CategoryCrudService;
 import com.book.find.services.MovieCrudService;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

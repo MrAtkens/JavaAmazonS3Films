@@ -1,5 +1,6 @@
 package com.book.find.services;
 
+import com.book.find.models.Auth.User;
 import com.book.find.models.Category;
 import com.book.find.repos.CategoryRepo;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class CategoryCrudService {
         return categoryRepo.findAll();
     }
 
+    public Iterable<Category> getCategoriesByUser(User user){
+        return categoryRepo.findCategoryByUser(user);
+    }
+
     public Category getCategoryById(UUID id){
          return categoryRepo.findById(id);
     }
@@ -30,10 +35,10 @@ public class CategoryCrudService {
         categoryRepo.save(category);
     }
 
-    public void editCategory(Category category, UUID categoryId){
+    public void editCategory(String name, String description, UUID categoryId){
         Category findedCategory = categoryRepo.findById(categoryId);
-        findedCategory.setName(category.getName());
-        findedCategory.setDescription(category.getDescription());
+        findedCategory.setName(name);
+        findedCategory.setDescription(description);
         categoryRepo.save(findedCategory);
     }
 

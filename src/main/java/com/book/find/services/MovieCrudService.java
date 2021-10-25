@@ -30,8 +30,19 @@ public class MovieCrudService {
         return filmRepo.findAll();
     }
 
+    public Iterable<Film> getFilmsAdmin(User user){
+        return filmRepo.findByUser(user);
+    }
+
     public Film getFilmById(UUID id){
         return filmRepo.findById(id);
+    }
+
+    public Film getFilmByIdByUser(UUID id, User user){
+        Film film = filmRepo.findById(id);
+        if(film.getUser().getId().equals(user.getId()))
+            return filmRepo.findById(id);
+        return null;
     }
 
     public void addFilm(FilmDto film, Category category, User user) throws IOException {
@@ -42,7 +53,6 @@ public class MovieCrudService {
             Map<String, String> metadataImage = new HashMap<>();
             metadataImage.put("Content-Type", film.image.getContentType());
             metadataImage.put("Content-Length", String.valueOf(film.image.getSize()));
-            metadataImage.put("acl", "public-read");
             String path = String.format("%s/%s", BucketName.TODO_IMAGE.getBucketName(), user.getId());
             String fileName = String.format("%s", UUID.randomUUID()+film.image.getOriginalFilename());
             BufferedInputStream bufferedInputStream = new BufferedInputStream(film.image.getInputStream());
@@ -56,7 +66,6 @@ public class MovieCrudService {
             Map<String, String> metadata = new HashMap<>();
             metadata.put("Content-Type", film.film.getContentType());
             metadata.put("Content-Length", String.valueOf(film.film.getSize()));
-            metadata.put("acl", "public-read");
             String path = String.format("%s/%s", BucketName.TODO_IMAGE.getBucketName(), user.getId());
             String fileName = String.format("%s", UUID.randomUUID()+film.film.getOriginalFilename());
             fileStore.upload(path, fileName, Optional.of(metadata), film.film.getInputStream());
@@ -66,7 +75,7 @@ public class MovieCrudService {
             throw new IllegalStateException("Failed to upload the file", e);
         }
         Film newFilm = new Film (film.name, film.rating, film.description, film.director,
-                film.country, film.scenarist, film.producer, category, filmPath, imagePath,
+                film.country, film.scenarist, film.producer, category, user, filmPath, imagePath,
                 film.boxOfficeInDollar, film.premiere, film.age);
         filmRepo.save(newFilm);
     }
@@ -80,7 +89,6 @@ public class MovieCrudService {
             Map<String, String> metadataImage = new HashMap<>();
             metadataImage.put("Content-Type", film.image.getContentType());
             metadataImage.put("Content-Length", String.valueOf(film.image.getSize()));
-            metadataImage.put("acl", "public-read");
             String path = String.format("%s/%s", BucketName.TODO_IMAGE.getBucketName(), user.getId());
             String fileName = String.format("%s", UUID.randomUUID()+film.image.getOriginalFilename());
             BufferedInputStream bufferedInputStream = new BufferedInputStream(film.image.getInputStream());
@@ -94,7 +102,6 @@ public class MovieCrudService {
             Map<String, String> metadata = new HashMap<>();
             metadata.put("Content-Type", film.film.getContentType());
             metadata.put("Content-Length", String.valueOf(film.film.getSize()));
-            metadata.put("acl", "public-read");
             String path = String.format("%s/%s", BucketName.TODO_IMAGE.getBucketName(), user.getId());
             String fileName = String.format("%s", UUID.randomUUID()+film.film.getOriginalFilename());
             fileStore.upload(path, fileName, Optional.of(metadata), film.film.getInputStream());

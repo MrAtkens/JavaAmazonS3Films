@@ -39,7 +39,7 @@
                                     <div class="col-md-6 form-group">
                                        <select name="category" class="form-control" id="exampleFormControlSelect1" required>
                                            <#list categories as category>
-                                          <option>${category.getName()}</option>
+                                          <option id=${category.getId()}>${category.getName()}</option>
                                            </#list>
                                        </select>
                                     </div>
