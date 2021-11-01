@@ -16,28 +16,27 @@
                         <div class="table-view">
                            <table class="data-tables table movie_table " style="width:100%">
                               <thead>
-                                 <tr>
-                                    <th style="width:10%;">No</th>
-                                    <th>Username</th>
-                                    <th>Creation date</th>
-                                 </tr>
+                              <tr>
+                                 <th style="width:10%;">No</th>
+                                 <th style="width:20%;">Name</th>
+                                 <th style="width:20%;">Register Date</th>
+                              </tr>
                               </thead>
                               <tbody>
-                                <#list films as user>
-                                    <tr>
-                                   <td>${user.getId()}</td>
-                                   <td>${user.getUsername()}</td>
-                                    <td>${user.getCreatedDate()}</td>
+                              <#list categories as category>
+                                 <tr>
+                                    <td>${category.getId()}</td>
+                                    <td>${category.getUsername()}</td>
+                                    <td>${category.getCreatedDate()}</td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" href="/deleteUser/${user.getId()}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" href="/deleteUser/${category.getId()}"><i
+                                                     class="ri-delete-bin-line"></i></a>
                                        </div>
                                     </td>
-                                        <#else> No users
                                  </tr>
-                                </#list>
+                              </#list>
                               </tbody>
                            </table>
                         </div>

@@ -1,5 +1,6 @@
 package com.book.find.controllers;
 
+import com.book.find.dto.SuperAdminDTO;
 import com.book.find.models.Auth.Role;
 import com.book.find.models.Auth.User;
 import com.book.find.repos.UserRepo;
@@ -30,13 +31,13 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(){
-        User findAdmin = userRepo.findByUsername("ZULU");
+        User findAdmin = userRepo.findByUsername(SuperAdminDTO.username);
         if(findAdmin == null) {
             User user = new User();
-            user.setUsername("ZULU");
+            user.setUsername(SuperAdminDTO.username);
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.ROLE_ADMIN));
-            String encodedPassword = bCryptPasswordEncoder.encode("Nuke1042");
+            String encodedPassword = bCryptPasswordEncoder.encode(SuperAdminDTO.password);
             user.setPassword(encodedPassword);
             userRepo.save(user);
         }

@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/jsFront/**","/css/**", "/js/*", "/images/**", "/imagesFront/*", "/cssFront/**", "/registration").permitAll()
                 .antMatchers("/users").access("hasRole('ADMIN')")
+                .antMatchers("/jsFront/**","/css/**", "/js/*", "/images/**", "/imagesFront/*", "/cssFront/**", "/registration").permitAll()
                 .anyRequest().authenticated().and().formLogin()
                 .loginPage("/login").defaultSuccessUrl("/admin", true).permitAll().and().logout()
                 .logoutUrl("/logout")
