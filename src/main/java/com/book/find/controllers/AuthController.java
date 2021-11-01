@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +30,16 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(){
+        User findAdmin = userRepo.findByUsername("ZULU");
+        if(findAdmin == null) {
+            User user = new User();
+            user.setUsername("ZULU");
+            user.setActive(true);
+            user.setRoles(Collections.singleton(Role.ROLE_ADMIN));
+            String encodedPassword = bCryptPasswordEncoder.encode("Nuke1042");
+            user.setPassword(encodedPassword);
+            userRepo.save(user);
+        }
         return "login";
     }
 
@@ -51,13 +60,14 @@ public class AuthController {
             return registration();
         }
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(Role.ROLE_USER));
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepo.save(user);
 
         return "redirect:/login";
     }
+
 
     @GetMapping(value="/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

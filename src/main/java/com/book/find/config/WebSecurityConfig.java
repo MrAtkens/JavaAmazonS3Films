@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/jsFront/**","/css/**", "/js/*", "/images/**", "/imagesFront/*", "/cssFront/**", "/registration").permitAll()
+                .antMatchers("/users").access("hasRole('ADMIN')")
                 .anyRequest().authenticated().and().formLogin()
                 .loginPage("/login").defaultSuccessUrl("/admin", true).permitAll().and().logout()
                 .logoutUrl("/logout")
